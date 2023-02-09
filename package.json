@@ -31,6 +31,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.11.0",
     "@types/react-router-dom": "^5.3.3",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "webextension-polyfill": "^0.10.0"
   }
 }
