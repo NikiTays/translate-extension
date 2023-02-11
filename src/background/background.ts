@@ -7,9 +7,7 @@ import {
 } from './api/translateExtension.api'
 import { TMessages } from './types/messages.type'
 
-const initialData = {
-  actionRequests: [],
-}
+const initialData = {}
 
 Browser.runtime.onInstalled.addListener(async () => {
   try {
@@ -20,24 +18,30 @@ Browser.runtime.onInstalled.addListener(async () => {
       ...userActions,
       ...userInfo,
       ...initialData,
-      isInitialized: true,
-      isDataSynchronized: true,
     })
-  } catch (_) {
-    await Browser.storage.sync.set({
-      isInitialized: false,
-      isDataSynchronized: false,
-    })
-  }
+  } catch (_) {}
 })
 
 Browser.runtime.onMessage.addListener(async ({ type, data }) => {
-  const { actions: userActions } = await Browser.storage.sync.get(['actions'])
-  const clickedAction = userActions.find(({ id }) => id === 1)
-
   if (type === TMessages.USER_ACTION_CLICKED) {
+    const {
+      actions: userActions,
+      actionRequests,
+    } = await Browser.storage.sync.get(['actions', 'actionRequests'])
+    const clickedAction = userActions.find(({ id }) => id === data.actionId)
+
+    const currentResult = {
+      result: '',
+      isPending: true,
+      isDone: false,
+      error: '',
+      createdOnUserAt: data.createdOnUserAt,
+    }
+
+    actionRequests.push(currentResult)
     await Browser.storage.sync.set({
-      currentResult: { result: '', isLoading: true, error: '' },
+      actionRequests,
+      currentResult,
     })
 
     const result = await actionsHandlers[clickedAction.provider](
@@ -45,9 +49,35 @@ Browser.runtime.onMessage.addListener(async ({ type, data }) => {
       data,
     )
 
-    await Browser.storage.sync.set({
-      currentResult: { result, isLoading: false, error: '' },
+    const updatedActionRequests = actionRequests.map(({ createdOnUserAt }) => {
+      if (data.createdOnUserAt === createdOnUserAt) {
+        return {
+          result,
+          isPending: false,
+          isDone: true,
+          error: '',
+          createdOnUserAt,
+        }
+      }
     })
+    await Browser.storage.sync.set({
+      actionRequests: updatedActionRequests,
+      currentResult: {
+        result,
+        isPending: false,
+        isDone: true,
+        error: '',
+        createdOnUserAt: data.createdOnUserAt,
+      },
+    })
+
+    return {
+      result,
+      isPending: false,
+      isDone: true,
+      error: '',
+      createdOnUserAt: data.createdOnUserAt,
+    }
   }
 
   if (type === TMessages.SELECTION_DONE) {

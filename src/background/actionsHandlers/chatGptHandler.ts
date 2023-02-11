@@ -1,4 +1,5 @@
 import { fetchSyncChatGpt } from '../api/chatGpt.api'
+import { TUserActionTypes } from '../types/userActions.type'
 
 export const chatGptHandler = async (
   { type, options }: any,
@@ -6,17 +7,17 @@ export const chatGptHandler = async (
 ): Promise<string> => {
   let question = ''
 
-  if (type === 'input') {
+  if (type === TUserActionTypes.INPUT) {
     question = input
   }
 
-  if (type === 'request-answer') {
+  if (type === TUserActionTypes.REQUEST_ANSWER) {
     const prompt = options?.prompt
 
     question = prompt.replace('{{input}}', input)
   }
 
-  if (type === 'translate') {
+  if (type === TUserActionTypes.TRANSLATE) {
     const { translateTo } = options
 
     question = `translate "${input}" to ${translateTo} language`

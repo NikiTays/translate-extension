@@ -4,30 +4,30 @@ export const requestUserActions = async () => {
       actions: [
         {
           id: 1,
-          type: 'translate',
+          type: 'TRANSLATE',
           name: 'translate action',
           description: 'translate action description',
-          provider: 'chat-gpt',
+          provider: 'CHAT_GPT',
           options: {
             translateTo: 'ru',
           },
         },
         {
           id: 2,
-          type: 'request-answer',
+          type: 'REQUEST_ANSWER',
           name: 'prompt action',
           description: 'prompt action description',
-          provider: 'chat-gpt',
+          provider: 'CHAT_GPT',
           options: {
-            prompt: 'explain this comand {{input}}',
+            prompt: 'explain this code {{input}}',
           },
         },
         {
-          id: 2,
-          type: 'input',
+          id: 3,
+          type: 'INPUT',
           name: 'input action',
           description: 'input action description',
-          provider: 'chat-gpt',
+          provider: 'CHAT_GPT',
           options: {},
         },
       ],
@@ -41,7 +41,10 @@ export const requestUserActions = async () => {
 
 export const requestUserInfo = async () => {
   try {
-    const data = await Promise.resolve({ name: 'Test user' })
+    const data = await Promise.resolve({
+      name: 'Test user',
+      actionRequests: [],
+    })
 
     return data
   } catch (_) {
