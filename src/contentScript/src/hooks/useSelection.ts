@@ -31,6 +31,7 @@ export const useSelection = () => {
     return () => {
       document.removeEventListener("mouseup", saveSelection);
       document.removeEventListener("onselectionchange", saveSelection);
+      setSelection(undefined);
     };
   }, []);
 
