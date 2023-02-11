@@ -30,45 +30,21 @@ Browser.runtime.onMessage.addListener(async ({ type, data }) => {
     } = await Browser.storage.sync.get(['actions', 'actionRequests'])
     const clickedAction = userActions.find(({ id }) => id === data.actionId)
 
-    const currentResult = {
-      result: '',
-      isPending: true,
-      isDone: false,
-      error: '',
-      createdOnUserAt: data.createdOnUserAt,
-    }
-
-    actionRequests.push(currentResult)
-    await Browser.storage.sync.set({
-      actionRequests,
-      currentResult,
-    })
-
     const result = await actionsHandlers[clickedAction.provider](
       clickedAction,
       data,
     )
 
-    const updatedActionRequests = actionRequests.map(({ createdOnUserAt }) => {
-      if (data.createdOnUserAt === createdOnUserAt) {
-        return {
-          result,
-          isPending: false,
-          isDone: true,
-          error: '',
-          createdOnUserAt,
-        }
-      }
+    actionRequests.push({
+      result,
+      isPending: false,
+      isDone: true,
+      error: '',
+      createdOnUserAt: data.createdOnUserAt,
     })
+
     await Browser.storage.sync.set({
-      actionRequests: updatedActionRequests,
-      currentResult: {
-        result,
-        isPending: false,
-        isDone: true,
-        error: '',
-        createdOnUserAt: data.createdOnUserAt,
-      },
+      actionRequests,
     })
 
     return {
