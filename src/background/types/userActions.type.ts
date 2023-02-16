@@ -3,8 +3,7 @@ import { TProviders } from './providers.type'
 type TOptions = Record<string, string | number>
 
 export enum TUserActionTypes {
-  INPUT = 'INPUT',
-  REQUEST_ANSWER = 'REQUEST_ANSWER',
+  REQUEST_PROMPT_ANSWER = 'REQUEST_PROMPT_ANSWER',
   TRANSLATE = 'TRANSLATE',
 }
 
@@ -16,3 +15,8 @@ export type TUserAction = {
   provider: TProviders
   options: TOptions
 }
+
+export type TUserActionDataHandler = (
+  text: string,
+  options: TUserAction['options'],
+) => string

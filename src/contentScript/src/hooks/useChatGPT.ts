@@ -1,45 +1,49 @@
-import { useCallback, useState } from "react";
-import {
-  TMessages,
-  TMessagesData,
-} from "../../../background/types/messages.type";
-import { sendMessage } from "../utils/sendMessage";
+import { useCallback, useState } from 'react'
+import Browser from 'webextension-polyfill'
+import { TMessages } from '../../../background/types/messages.type'
 
 export const useChatGPT = () => {
-  const [result, setResult] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const sendMessageThatActionClicked = useCallback(
     ({
-        text,
-        actionId,
-        isNeedToUpdate,
-      }: {
-        text: string;
-        actionId: number;
-        isNeedToUpdate: boolean;
-      }) =>
-      async () => {
-        const createdOnUserAt = Date.now();
+      text,
+      actionId,
+      isNeedToUpdate,
+    }: {
+      text: string
+      actionId: number
+      isNeedToUpdate: boolean
+    }) => async () => {
+      setIsLoading(true)
 
-        const data: TMessagesData[TMessages.USER_ACTION_CLICKED] = {
+      const port = Browser.runtime.connect()
+      const listener = (msg: any) => {
+        if (msg.text) {
+          setResult(msg.text)
+        }
+        if (msg.status === 'STARTED') {
+          setIsLoading(false)
+        }
+        if (msg.status === 'DONE') {
+          port.disconnect()
+          port.onMessage.removeEventListener(listener)
+        }
+      }
+
+      port.onMessage.addListener(listener)
+      port.postMessage({
+        type: TMessages.USER_ACTION_CLICKED,
+        data: {
           input: text,
           actionId,
           isNeedToUpdate,
-          createdOnUserAt,
-        };
+        },
+      })
+    },
+    [],
+  )
 
-        setIsLoading(true);
-        const { result } = await sendMessage(
-          TMessages.USER_ACTION_CLICKED,
-          data
-        );
-        setIsLoading(false);
-
-        setResult(result);
-      },
-    []
-  );
-
-  return { sendMessageThatActionClicked, result, isLoading };
-};
+  return { sendMessageThatActionClicked, result, isLoading }
+}

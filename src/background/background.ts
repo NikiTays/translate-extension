@@ -1,11 +1,61 @@
 import Browser from 'webextension-polyfill'
 
-import { actionsHandlers } from './actionsHandlers'
 import {
   requestUserActions,
   requestUserInfo,
 } from './api/translateExtension.api'
-import { TMessages } from './types/messages.type'
+import { TMessages, TMessagesData } from './types/messages.type'
+import { providersMap } from './providers'
+import { TUserAction } from './types/userActions.type'
+import { TOnProviderMessage } from './types/providers.type'
+
+const portMessageHandlersMap: Record<
+  TMessages,
+  (
+    port: Browser.Runtime.Port,
+    data: TMessagesData[TMessages.USER_ACTION_CLICKED],
+  ) => Promise<void>
+> = {
+  [TMessages.USER_ACTION_CLICKED]: async (port, data) => {
+    try {
+      const { actionId, input, isNeedToUpdate } = data
+      const { actions: userActions } = await Browser.storage.sync.get([
+        'actions',
+      ])
+      const clickedAction: TUserAction = userActions.find(
+        ({ id }) => id === actionId,
+      )
+
+      const providerHandler = providersMap[clickedAction.provider]
+
+      if (!providerHandler) {
+        throw Error('Unknown provider')
+      }
+
+      const onMessage: TOnProviderMessage = (message) => {
+        if (message.status === 'started') {
+          port.postMessage({ status: 'STARTED' })
+          return
+        } else if (message.status === 'done') {
+          port.postMessage({ status: 'DONE' })
+          return
+        }
+        port.postMessage(message.data)
+      }
+
+      await providerHandler(onMessage, {
+        clickedAction,
+        input,
+        isNeedToUpdate,
+      })
+    } catch (error) {
+      port.postMessage({
+        status: 'DONE',
+        error: `Cannot handle user action event due to - ${error}`,
+      })
+    }
+  },
+}
 
 const initialData = {}
 
@@ -22,43 +72,41 @@ Browser.runtime.onInstalled.addListener(async () => {
   } catch (_) {}
 })
 
-Browser.runtime.onMessage.addListener(async ({ type, data }) => {
-  if (type === TMessages.USER_ACTION_CLICKED) {
-    const {
-      actions: userActions,
-      actionRequests,
-    } = await Browser.storage.sync.get(['actions', 'actionRequests'])
-    const clickedAction = userActions.find(({ id }) => id === data.actionId)
+// Browser.runtime.onMessage.addListener(async ({ type, data }) =>
 
-    const result = await actionsHandlers[clickedAction.provider](
-      clickedAction,
+// export async function getChatGPTAccessToken(): Promise<string> {
+//   const resp = await fetch('https://chat.openai.com/api/auth/session')
+//   if (resp.status === 403) {
+//     throw new Error('CLOUDFLARE')
+//   }
+//   const data = await resp.json().catch(() => ({}))
+//   if (!data.accessToken) {
+//     throw new Error('UNAUTHORIZED')
+//   }
+
+//   return data.accessToken
+// }
+
+Browser.runtime.onConnect.addListener((port) => {
+  port.onMessage.addListener(
+    async ({
+      type,
       data,
-    )
+    }: {
+      type: TMessages
+      data: TMessagesData[TMessages]
+    }) => {
+      const portMessageHandler = portMessageHandlersMap[type]
 
-    actionRequests.push({
-      result,
-      isPending: false,
-      isDone: true,
-      error: '',
-      createdOnUserAt: data.createdOnUserAt,
-    })
+      if (!portMessageHandler) {
+        port.postMessage({
+          status: 'DONE',
+          error: 'Unknown message',
+        })
+        return
+      }
 
-    await Browser.storage.sync.set({
-      actionRequests,
-    })
-
-    return {
-      result,
-      isPending: false,
-      isDone: true,
-      error: '',
-      createdOnUserAt: data.createdOnUserAt,
-    }
-  }
-
-  if (type === TMessages.SELECTION_DONE) {
-    await Browser.storage.sync.set({
-      currentResult: {},
-    })
-  }
+      await portMessageHandler(port, data)
+    },
+  )
 })

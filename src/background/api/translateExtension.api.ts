@@ -14,28 +14,30 @@ export const requestUserActions = async () => {
         },
         {
           id: 2,
-          type: 'REQUEST_ANSWER',
+          type: 'REQUEST_PROMPT_ANSWER',
           name: 'prompt action',
           description: 'prompt action description',
           provider: 'CHAT_GPT',
           options: {
-            prompt: 'explain this code {{input}}',
+            promptTemplate: 'explain this code "{{input}}"',
           },
         },
         {
           id: 3,
-          type: 'INPUT',
-          name: 'input action',
-          description: 'input action description',
+          type: 'REQUEST_PROMPT_ANSWER',
+          name: 'second prompt action',
+          description: 'second prompt action description',
           provider: 'CHAT_GPT',
-          options: {},
+          options: {
+            promptTemplate: 'what is "{{input}}"',
+          },
         },
       ],
     })
 
     return data
   } catch (_) {
-    throw Error('cannot request user actions')
+    console.error('cannot request user actions')
   }
 }
 
@@ -48,6 +50,6 @@ export const requestUserInfo = async () => {
 
     return data
   } catch (_) {
-    throw Error('cannot request user info')
+    console.error('cannot request user info')
   }
 }
