@@ -1,0 +1,1 @@
+export const Z_INDEX_MAX_VALUE = 2147483647;
