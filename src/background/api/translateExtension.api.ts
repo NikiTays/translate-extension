@@ -32,6 +32,17 @@ export const requestUserActions = async () => {
             promptTemplate: 'what is "{{input}}"',
           },
         },
+        {
+          id: 4,
+          type: 'TRANSLATE',
+          name: 'Translate with google',
+          description: 'translate with google description',
+          provider: 'GOOGLE_TRANSLATE',
+          options: {
+            translateFrom: 'en',
+            translateTo: 'ru',
+          },
+        },
       ],
     })
 

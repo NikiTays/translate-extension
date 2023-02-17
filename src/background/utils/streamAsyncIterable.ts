@@ -4,8 +4,6 @@ export async function* streamAsyncIterable(stream) {
     while (true) {
       const { done, value } = await reader.read()
 
-      console.log('===== value ', value)
-
       if (done) {
         return
       }

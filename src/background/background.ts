@@ -33,14 +33,17 @@ const portMessageHandlersMap: Record<
       }
 
       const onMessage: TOnProviderMessage = (message) => {
+        let status = ''
         if (message.status === 'started') {
-          port.postMessage({ status: 'STARTED' })
-          return
-        } else if (message.status === 'done') {
-          port.postMessage({ status: 'DONE' })
-          return
+          status = 'STARTED'
         }
-        port.postMessage(message.data)
+        if (message.status === 'done') {
+          status = 'DONE'
+        }
+        if (message.status === 'data-stream') {
+          status = 'DATA_STREAM'
+        }
+        port.postMessage({ status, text: message?.data?.text })
       }
 
       await providerHandler(onMessage, {

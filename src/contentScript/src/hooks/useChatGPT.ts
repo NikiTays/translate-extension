@@ -20,15 +20,18 @@ export const useChatGPT = () => {
 
       const port = Browser.runtime.connect()
       const listener = (msg: any) => {
-        if (msg.text) {
-          setResult(msg.text)
+        if (msg?.text) {
+          setResult(msg?.text)
         }
         if (msg.status === 'STARTED') {
+          setIsLoading(true)
+        }
+        if (msg.status === 'DATA_STREAM') {
           setIsLoading(false)
         }
         if (msg.status === 'DONE') {
+          setIsLoading(false)
           port.disconnect()
-          port.onMessage.removeEventListener(listener)
         }
       }
 

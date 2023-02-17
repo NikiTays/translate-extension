@@ -3,6 +3,7 @@ import { TUserAction } from './userActions.type'
 
 export enum TProviders {
   CHAT_GPT = 'CHAT_GPT',
+  GOOGLE_TRANSLATE = 'GOOGLE_TRANSLATE',
 }
 
 export type TProviderOptions = Pick<
@@ -17,8 +18,8 @@ export type TProviderHandler = (
 
 export type TProviderMessage = {
   status: string
-  data: string
-  error: string
+  data?: Record<string, any>
+  error?: string
 }
 
 export type TOnProviderMessage = (message: TProviderMessage) => void

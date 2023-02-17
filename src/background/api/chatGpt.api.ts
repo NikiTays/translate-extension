@@ -5,7 +5,7 @@ export const fetchSyncChatGpt = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer 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`,
+      Authorization: `Bearer `,
     },
     body: JSON.stringify({
       model: 'text-davinci-003',
