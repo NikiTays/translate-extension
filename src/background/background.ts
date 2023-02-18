@@ -54,7 +54,7 @@ const portMessageHandlersMap: Record<
     } catch (error) {
       port.postMessage({
         status: 'DONE',
-        error: `Cannot handle user action event due to - ${error}`,
+        error: error.message,
       })
     }
   },

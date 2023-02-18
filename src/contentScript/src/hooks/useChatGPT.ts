@@ -5,6 +5,7 @@ import { TMessages } from '../../../background/types/messages.type'
 export const useChatGPT = () => {
   const [result, setResult] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const sendMessageThatActionClicked = useCallback(
     ({
@@ -20,6 +21,7 @@ export const useChatGPT = () => {
 
       const port = Browser.runtime.connect()
       const listener = (msg: any) => {
+        console.log('===== ', msg)
         if (msg?.text) {
           setResult(msg?.text)
         }
@@ -31,6 +33,10 @@ export const useChatGPT = () => {
         }
         if (msg.status === 'DONE') {
           setIsLoading(false)
+          port.disconnect()
+        }
+        if (msg.error) {
+          setError(msg.error)
           port.disconnect()
         }
       }
@@ -48,5 +54,5 @@ export const useChatGPT = () => {
     [],
   )
 
-  return { sendMessageThatActionClicked, result, isLoading }
+  return { sendMessageThatActionClicked, result, isLoading, error }
 }

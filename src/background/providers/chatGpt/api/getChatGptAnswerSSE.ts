@@ -4,12 +4,11 @@ import { createParser } from '../../../../lib/eventsource-parser/parse'
 import { TOnProviderMessage } from '../../../types/providers.type'
 import { streamAsyncIterable } from '../../../utils/streamAsyncIterable'
 
-const chatGptToken = ''
-
 export const getChatGptAnswerSSE: (options: {
   onMessage: TOnProviderMessage
   prompt: string
-}) => Promise<void> = async ({ onMessage, prompt }) => {
+  token: string
+}) => Promise<void> = async ({ onMessage, prompt, token }) => {
   onMessage({ status: 'started' })
 
   const controller = new AbortController()
@@ -19,7 +18,7 @@ export const getChatGptAnswerSSE: (options: {
     signal: controller.signal,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${chatGptToken}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       action: 'next',
