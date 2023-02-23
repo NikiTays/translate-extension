@@ -24,10 +24,7 @@ export const TooltipAI = () => {
 
   return (
     <OnSelect>
-      <Box
-        sx={{ maxWidth: "333px", maxHeight: "222px", overflowY: "scroll" }}
-        onMouseUp={(e) => e.stopPropagation()}
-      >
+      <Box sx={{ maxWidth: "333px" }} onMouseUp={(e) => e.stopPropagation()}>
         <StepComponent />
       </Box>
     </OnSelect>

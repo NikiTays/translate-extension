@@ -5,6 +5,7 @@ import { TViewState, useStore } from "../store/useStore";
 
 export const useChatGPT = () => {
   const setViewState = useStore((state) => state.setViewState);
+  const viewState = useStore((state) => state.viewState);
   const setResult = useStore((state) => state.setResult);
   const setError = useStore((state) => state.setError);
 
@@ -31,10 +32,14 @@ export const useChatGPT = () => {
             setViewState(TViewState.LOADING);
           }
           if (msg.status === "DATA_STREAM") {
-            setViewState(TViewState.DATA_STREAM);
+            if (viewState !== TViewState.LARGE_RESULT) {
+              setViewState(TViewState.DATA_STREAM);
+            }
           }
           if (msg.status === "DONE") {
-            setViewState(TViewState.RESULT);
+            if (viewState !== TViewState.LARGE_RESULT) {
+              setViewState(TViewState.RESULT);
+            }
             port.disconnect();
           }
           if (msg.error) {

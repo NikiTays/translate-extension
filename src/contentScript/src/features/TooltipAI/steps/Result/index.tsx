@@ -11,14 +11,8 @@ export const Result: FC = () => {
   const setViewState = useStore((state) => state.setViewState);
 
   return (
-    <Box>
-      <Box
-        sx={{
-          position: "fixed",
-          width: "95%",
-          background: "rgba(97, 97, 97, 0.92)",
-        }}
-      >
+    <Box sx={{ width: "333px" }}>
+      <Box>
         <Stack direction="row" alignItems="center">
           <Typography variant="body1" sx={{ flexGrow: 1 }}>
             ChatGPT:
@@ -44,7 +38,7 @@ export const Result: FC = () => {
         </Stack>
         <Divider />
       </Box>
-      <Box sx={{ paddingTop: "34px" }}>
+      <Box sx={{ maxHeight: "222px", overflowY: "scroll" }}>
         <Typography variant="body1">{result}</Typography>
       </Box>
     </Box>

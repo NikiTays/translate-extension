@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,18 +22,27 @@ export const LargeResult = () => {
       onClose={() => setIsOpen(false)}
       open={isOpen}
       scroll="paper"
-      maxWidth="lg"
+      maxWidth="md"
     >
       <DialogTitle>
         <Stack direction="row" alignItems="center">
-          <Typography sx={{ flexGrow: 1 }}>CharGPT: </Typography>
+          <span style={{ flexGrow: 1 }}>CharGPT: </span>
           <IconButton onClick={() => setIsOpen(false)}>
             <CloseIcon />
           </IconButton>
         </Stack>
       </DialogTitle>
-      <DialogContent sx={{ minHeight: "80vh" }}>
-        <Typography variant="body1">{result}</Typography>
+      <DialogContent sx={{ paddingBottom: 0 }}>
+        <Box
+          sx={{
+            width: "1000px",
+            maxWidth: "100%",
+            height: "75vh",
+            overflowY: "scroll",
+          }}
+        >
+          <Typography variant="body1">{result}</Typography>
+        </Box>
       </DialogContent>
       <DialogActions>
         <TextField
