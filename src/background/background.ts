@@ -4,63 +4,19 @@ import {
   requestUserActions,
   requestUserInfo,
 } from './api/translateExtension.api'
-import { TMessages, TMessagesData } from './types/messages.type'
-import { providersMap } from './providers'
-import { TUserAction } from './types/userActions.type'
-import { TOnProviderMessage } from './types/providers.type'
+import { portMessageHandlersMap } from './messageHandlers/portMessages'
+import { syncMessageHandlersMap } from './messageHandlers/syncMessages'
+import { TErrors } from './types/error.type'
+import {
+  TPortMessages,
+  TPortMessagesData,
+  TSyncMessages,
+  TSyncMessagesData,
+} from './types/messages.type'
 
-const portMessageHandlersMap: Record<
-  TMessages,
-  (
-    port: Browser.Runtime.Port,
-    data: TMessagesData[TMessages.USER_ACTION_CLICKED],
-  ) => Promise<void>
-> = {
-  [TMessages.USER_ACTION_CLICKED]: async (port, data) => {
-    try {
-      const { actionId, input, isNeedToUpdate } = data
-      const { actions: userActions } = await Browser.storage.sync.get([
-        'actions',
-      ])
-      const clickedAction: TUserAction = userActions.find(
-        ({ id }) => id === actionId,
-      )
-
-      const providerHandler = providersMap[clickedAction.provider]
-
-      if (!providerHandler) {
-        throw Error('Unknown provider')
-      }
-
-      const onMessage: TOnProviderMessage = (message) => {
-        let status = ''
-        if (message.status === 'started') {
-          status = 'STARTED'
-        }
-        if (message.status === 'done') {
-          status = 'DONE'
-        }
-        if (message.status === 'data-stream') {
-          status = 'DATA_STREAM'
-        }
-        port.postMessage({ status, text: message?.data?.text })
-      }
-
-      await providerHandler(onMessage, {
-        clickedAction,
-        input,
-        isNeedToUpdate,
-      })
-    } catch (error) {
-      port.postMessage({
-        status: 'DONE',
-        error: error.message,
-      })
-    }
-  },
+const initialData = {
+  actionRequest: [],
 }
-
-const initialData = {}
 
 Browser.runtime.onInstalled.addListener(async () => {
   try {
@@ -75,20 +31,23 @@ Browser.runtime.onInstalled.addListener(async () => {
   } catch (_) {}
 })
 
-// Browser.runtime.onMessage.addListener(async ({ type, data }) =>
+Browser.runtime.onMessage.addListener(
+  async ({
+    type,
+    data,
+  }: {
+    type: TSyncMessages
+    data: TSyncMessagesData[TSyncMessages]
+  }) => {
+    const syncMessageHandler = syncMessageHandlersMap[type]
 
-// export async function getChatGPTAccessToken(): Promise<string> {
-//   const resp = await fetch('https://chat.openai.com/api/auth/session')
-//   if (resp.status === 403) {
-//     throw new Error('CLOUDFLARE')
-//   }
-//   const data = await resp.json().catch(() => ({}))
-//   if (!data.accessToken) {
-//     throw new Error('UNAUTHORIZED')
-//   }
+    if (!syncMessageHandler) {
+      return ''
+    }
 
-//   return data.accessToken
-// }
+    return await syncMessageHandler(data)
+  },
+)
 
 Browser.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(
@@ -96,15 +55,15 @@ Browser.runtime.onConnect.addListener((port) => {
       type,
       data,
     }: {
-      type: TMessages
-      data: TMessagesData[TMessages]
+      type: TPortMessages
+      data: TPortMessagesData[TPortMessages]
     }) => {
       const portMessageHandler = portMessageHandlersMap[type]
 
       if (!portMessageHandler) {
         port.postMessage({
           status: 'DONE',
-          error: 'Unknown message',
+          error: TErrors.UNKNOWN_PORT_MESSAGE,
         })
         return
       }

@@ -1,7 +1,13 @@
-import React from "react";
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+import MyActions from './pages/MyActions/MyActions'
 
 const App: React.FC<{}> = () => {
-  return <div>options</div>;
-};
+  return (
+    <Routes>
+      <Route path="/" element={<MyActions />} />
+    </Routes>
+  )
+}
 
-export default App;
+export default App

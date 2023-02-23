@@ -1,4 +1,4 @@
-import { TMessages, TMessagesData } from './messages.type'
+import { TPortMessages, TPortMessagesData } from './messages.type'
 import { TUserAction } from './userActions.type'
 
 export enum TProviders {
@@ -7,7 +7,7 @@ export enum TProviders {
 }
 
 export type TProviderOptions = Pick<
-  TMessagesData[TMessages.USER_ACTION_CLICKED],
+  TPortMessagesData[TPortMessages.USER_ACTION_CLICKED],
   'input' | 'isNeedToUpdate'
 > & { clickedAction: TUserAction }
 
