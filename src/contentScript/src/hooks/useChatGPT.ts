@@ -1,7 +1,7 @@
-import { useCallback } from 'react'
-import Browser from 'webextension-polyfill'
-import { TPortMessages } from '../../../background/types/messages.type'
-import { TViewState, useStore } from '../store/useStore'
+import { useCallback } from "react";
+import Browser from "webextension-polyfill";
+import { TPortMessages } from "../../../background/types/messages.type";
+import { TViewState, useStore } from "../store/useStore";
 
 export const useChatGPT = () => {
   const setViewState = useStore((state) => state.setViewState);
@@ -11,15 +11,16 @@ export const useChatGPT = () => {
 
   const sendMessageThatActionClicked = useCallback(
     ({
-      text,
-      actionId,
-      isNeedToUpdate,
-    }: {
-      text: string
-      actionId: number
-      isNeedToUpdate: boolean
-    }) => async () => {
-      setViewState(TViewState.LOADING)
+        text,
+        actionId,
+        isNeedToUpdate,
+      }: {
+        text: string;
+        actionId: number;
+        isNeedToUpdate: boolean;
+      }) =>
+      async () => {
+        setViewState(TViewState.LOADING);
 
         const port = Browser.runtime.connect();
         const listener = (msg: any) => {
@@ -48,18 +49,18 @@ export const useChatGPT = () => {
           }
         };
 
-      port.onMessage.addListener(listener)
-      port.postMessage({
-        type: TPortMessages.USER_ACTION_CLICKED,
-        data: {
-          input: text,
-          actionId,
-          isNeedToUpdate,
-        },
-      })
-    },
-    [],
-  )
+        port.onMessage.addListener(listener);
+        port.postMessage({
+          type: TPortMessages.USER_ACTION_CLICKED,
+          data: {
+            input: text,
+            actionId,
+            isNeedToUpdate,
+          },
+        });
+      },
+    []
+  );
 
-  return { sendMessageThatActionClicked }
-}
+  return { sendMessageThatActionClicked };
+};
