@@ -12,31 +12,41 @@ export const Result: FC = () => {
 
   return (
     <Box>
-      <Stack direction="row" alignItems="center">
-        <Typography variant="body1" sx={{ flexGrow: 1 }}>
-          ChatGPT:
-        </Typography>
-        <CustomTooltip
-          title="Large window"
-          onClick={() => setViewState(TViewState.LARGE_RESULT)}
-        >
-          <IconButton size="small">
-            <OpenInFullIcon fontSize="small" />
-          </IconButton>
-        </CustomTooltip>
-        <CustomTooltip title="Refresh">
-          <IconButton size="small">
-            <RefreshIcon fontSize="medium" />
-          </IconButton>
-        </CustomTooltip>
-        <CustomTooltip title="Copy">
-          <IconButton size="small">
-            <ContentCopyIcon fontSize="small" />
-          </IconButton>
-        </CustomTooltip>
-      </Stack>
-      <Divider />
-      <Typography variant="body1">{result}</Typography>
+      <Box
+        sx={{
+          position: "fixed",
+          width: "95%",
+          background: "rgba(97, 97, 97, 0.92)",
+        }}
+      >
+        <Stack direction="row" alignItems="center">
+          <Typography variant="body1" sx={{ flexGrow: 1 }}>
+            ChatGPT:
+          </Typography>
+          <CustomTooltip
+            title="Large window"
+            onClick={() => setViewState(TViewState.LARGE_RESULT)}
+          >
+            <IconButton size="small">
+              <OpenInFullIcon fontSize="small" />
+            </IconButton>
+          </CustomTooltip>
+          <CustomTooltip title="Refresh">
+            <IconButton size="small">
+              <RefreshIcon fontSize="medium" />
+            </IconButton>
+          </CustomTooltip>
+          <CustomTooltip title="Copy">
+            <IconButton size="small">
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </CustomTooltip>
+        </Stack>
+        <Divider />
+      </Box>
+      <Box sx={{ paddingTop: "34px" }}>
+        <Typography variant="body1">{result}</Typography>
+      </Box>
     </Box>
   );
 };
