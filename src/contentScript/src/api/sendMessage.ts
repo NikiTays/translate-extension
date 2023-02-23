@@ -1,6 +1,5 @@
 import Browser from "webextension-polyfill";
 import { TActionRequest } from "../../../background/types/actionRequest.type";
-
 import { TMessages } from "../../../background/types/messages.type";
 
 export const sendMessage = (

@@ -1,7 +1,5 @@
-import { styled } from "@mui/material";
-import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
 import React from "react";
-import { Z_INDEX_MAX_VALUE } from "../../../const/cssMaxValue";
+import { styled, Tooltip, tooltipClasses, TooltipProps } from "@mui/material";
 
 export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -9,5 +7,6 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   [`& .${tooltipClasses.tooltip}`]: {
     padding: "8px",
     backdropFilter: "blur(4px)",
+    maxWidth: "444px",
   },
 }));

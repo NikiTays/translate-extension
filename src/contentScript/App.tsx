@@ -1,8 +1,8 @@
 import React from "react";
-import { TooltipGPT } from "./src/features/TooltipGPT";
+import { TooltipAI } from "./src/features/TooltipAI";
 
 const App: React.FC = () => {
-  return <TooltipGPT />;
+  return <TooltipAI />;
 };
 
 export default App;

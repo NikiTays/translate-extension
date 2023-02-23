@@ -1,12 +1,13 @@
-import { TOnProviderMessage } from '../../../types/providers.type'
+import { TOnProviderMessage } from "../../../types/providers.type";
+import { TErrors } from "../../../types/error.type";
 
-const googleToken = ''
+const googleToken = "";
 
 export const getGoogleTranslate: (options: {
-  onMessage: TOnProviderMessage
-  translateFrom: string
-  translateTo: string
-  input: string
+  onMessage: TOnProviderMessage;
+  translateFrom: string;
+  translateTo: string;
+  input: string;
 }) => Promise<void> = async ({
   onMessage,
   translateFrom,
@@ -14,34 +15,31 @@ export const getGoogleTranslate: (options: {
   input,
 }) => {
   try {
-    onMessage({ status: 'started' })
+    onMessage({ status: "started" });
 
     const response = await fetch(
-      'https://translation.googleapis.com/language/translate/v2',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${googleToken || ''}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          q: input,
-          source: translateFrom,
-          target: translateTo,
-          format: 'text',
-        }),
-      },
-    )
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${translateFrom}&tl=${translateTo}&hl=en-GB&dt=t&dt=bd&dj=1&source=icon&tk=487232.487232&q=${encodeURI(
+        input
+      )}`
+    );
     if (!response.ok) {
-      throw new Error('Google did not respond.')
+      throw new Error(TErrors.GOOGLE_PROVIDER_DID_NOT_RESPOND);
     }
-    const { data } = await response.json()
+
+    const { sentences } = await response.json();
+
+    let text = "";
+
+    for (let i = 0; i < sentences.length; i++) {
+      text += sentences[i].trans;
+    }
+
     onMessage({
-      status: 'done',
-      data: { text: data?.translations[0]?.translatedText },
-    })
+      status: "done",
+      data: { text: text },
+    });
   } catch (error) {
-    console.error(error)
-    throw error
+    console.error(error);
+    throw error;
   }
-}
+};
