@@ -1,4 +1,5 @@
 import ExpiryMap from 'expiry-map'
+
 import { TErrors } from '../../../types/error.type'
 
 const KEY_ACCESS_TOKEN = 'accessToken'
