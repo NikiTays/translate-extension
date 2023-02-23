@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import Browser from "webextension-polyfill";
 import { TMessages } from "../../../background/types/messages.type";
 import { TViewState, useStore } from "../store/useStore";

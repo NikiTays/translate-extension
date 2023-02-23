@@ -28,6 +28,7 @@ const initialState: IStoreInitialState = {
   viewState: TViewState.MENU,
 };
 
+import { devtools } from "zustand/middleware";
 export const useStore = create<IStoreInitialState & IStoreInitialActions>(
   (set) => ({
     ...initialState,

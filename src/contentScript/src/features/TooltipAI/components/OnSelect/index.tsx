@@ -2,7 +2,7 @@ import { useSelection } from "../../../../hooks/useSelection";
 import Zoom from "@mui/material/Zoom";
 import React, { FC, useEffect } from "react";
 import { CustomTooltip } from "./components/CustomTooltip";
-import { useStore } from "../../../../store/useStore";
+import { TViewState, useStore } from "../../../../store/useStore";
 
 interface IOwnProps {
   children: JSX.Element | string;
@@ -12,6 +12,9 @@ export const OnSelect: FC<IOwnProps> = (props) => {
   const { children } = props;
   const { selection } = useSelection();
   const clearState = useStore((state) => state.clearState);
+  const viewState = useStore((state) => state.viewState);
+
+  const isOpen = viewState === TViewState.LARGE_RESULT ? 0 : 1;
 
   useEffect(() => {
     return () => {
@@ -21,7 +24,13 @@ export const OnSelect: FC<IOwnProps> = (props) => {
 
   if (selection?.text.length > 1 && selection.text) {
     return (
-      <CustomTooltip title={children} TransitionComponent={Zoom} open arrow>
+      <CustomTooltip
+        title={children}
+        TransitionComponent={Zoom}
+        open
+        arrow
+        sx={{ opacity: isOpen }}
+      >
         <div
           style={{
             width: 0,
