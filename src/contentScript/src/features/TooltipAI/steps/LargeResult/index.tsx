@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Box,
   Dialog,
@@ -9,13 +9,14 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import { useStore } from "../../../../store/useStore";
-import CloseIcon from "@mui/icons-material/Close";
+} from '@mui/material'
+import { useStore } from '../../../../store/useStore'
+import CloseIcon from '@mui/icons-material/Close'
+import { useAIProviderContext } from '../../AIProvider/AIProvider.context'
 
 export const LargeResult = () => {
-  const result = useStore((state) => state.result);
-  const [isOpen, setIsOpen] = useState(true);
+  const { result } = useAIProviderContext()
+  const [isOpen, setIsOpen] = useState(true)
 
   return (
     <Dialog
@@ -35,10 +36,10 @@ export const LargeResult = () => {
       <DialogContent sx={{ paddingBottom: 0 }}>
         <Box
           sx={{
-            width: "1000px",
-            maxWidth: "100%",
-            height: "75vh",
-            overflowY: "scroll",
+            width: '1000px',
+            maxWidth: '100%',
+            height: '75vh',
+            overflowY: 'scroll',
           }}
         >
           <Typography variant="body1">{result}</Typography>
@@ -49,9 +50,9 @@ export const LargeResult = () => {
           size="small"
           variant="outlined"
           hiddenLabel
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
         />
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}

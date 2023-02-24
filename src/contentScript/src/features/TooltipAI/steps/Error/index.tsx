@@ -1,13 +1,14 @@
-import React from "react";
-import { errorMessageComponentsMap } from "./errors";
-import { TErrors } from "../../../../../../background/types/error.type";
-import { useStore } from "../../../../store/useStore";
+import React from 'react'
+import { errorMessageComponentsMap } from './errors'
+import { TErrors } from '../../../../../../background/types/error.type'
+import { useStore } from '../../../../store/useStore'
+import { useAIProviderContext } from '../../AIProvider/AIProvider.context'
 
 export const Error = () => {
-  const error = useStore((state) => state.error);
+  const { error } = useAIProviderContext()
   const ErrorMessageComponent =
     errorMessageComponentsMap[TErrors[error]] ||
-    errorMessageComponentsMap[TErrors.UNKNOWN];
+    errorMessageComponentsMap[TErrors.UNKNOWN]
 
-  return <ErrorMessageComponent />;
-};
+  return <ErrorMessageComponent />
+}

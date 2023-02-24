@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand'
 
 export enum TViewState {
   MENU,
@@ -10,31 +10,33 @@ export enum TViewState {
 }
 
 interface IStoreInitialState {
-  error: string;
-  result: string;
-  viewState: TViewState;
+  error: string
+  result: string
+  viewState: TViewState
 }
 
 interface IStoreInitialActions {
-  setViewState: (viewState: TViewState) => void;
-  setResult: (result: string) => void;
-  setError: (error: string) => void;
-  clearState: () => void;
+  setViewState: (viewState: TViewState) => void
+  setResult: (result: string) => void
+  setError: (error: string) => void
+  clearState: () => void
 }
 
 const initialState: IStoreInitialState = {
-  error: "",
-  result: "",
+  error: '',
+  result: '',
   viewState: TViewState.MENU,
-};
+}
 
-import { devtools } from "zustand/middleware";
 export const useStore = create<IStoreInitialState & IStoreInitialActions>(
   (set) => ({
     ...initialState,
-    setViewState: (viewState) => set(() => ({ viewState })),
+    setViewState: (viewState) =>
+      set(() => {
+        return { viewState }
+      }),
     setResult: (result) => set(() => ({ result })),
     setError: (error) => set(() => ({ error })),
     clearState: () => set(() => initialState),
-  })
-);
+  }),
+)
