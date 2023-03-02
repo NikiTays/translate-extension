@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { IconButton } from "@mui/material";
+import { Box, Button, CssBaseline, IconButton } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 import { TSyncMessages } from "../background/types/messages.type";
@@ -11,9 +11,19 @@ const App: React.FC<{}> = () => {
   }, []);
 
   return (
-    <IconButton onClick={openSettings}>
-      <SettingsIcon />
-    </IconButton>
+    <React.StrictMode>
+      <CssBaseline>
+        <Box sx={{ padding: "16px" }}>
+          <Button
+            onClick={openSettings}
+            variant="contained"
+            endIcon={<SettingsIcon />}
+          >
+            Settings
+          </Button>
+        </Box>
+      </CssBaseline>
+    </React.StrictMode>
   );
 };
 

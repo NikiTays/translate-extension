@@ -1,36 +1,64 @@
-import React from 'react'
-import { useMyActionsStore } from '../../myActionsStore'
+import React, { useState } from "react";
+import { useMyActionsStore } from "../../myActionsStore";
+import { Reorder } from "framer-motion";
+import { Card, CardContent, Stack, Typography } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const ActionsList: React.FC<{}> = () => {
-  const { actions } = useMyActionsStore()
-
+  const { actions } = useMyActionsStore();
+  const [copyActions, setCopyActions] = useState([...actions]);
   return (
-    <div>
-      <div>
-        {actions.map(({ id, name, description, type, provider, options }) => (
-          <div style={{ margin: '25px' }}>
-            action: {id}
-            <div>name: {name}</div>
-            <div>description: {description}</div>
-            <div>type: {type}</div>
-            <div>provider: {provider}</div>
-            <div style={{ margin: '20px' }}>
-              Options:{' '}
-              {Object.values(options).map((value) => (
-                <div style={{ margin: '10px' }}>
-                  <div>value: {value.optionValue}</div>
-                  <div>name: {value.optionName}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+    <Reorder.Group
+      as="div"
+      axis="y"
+      values={copyActions}
+      onReorder={setCopyActions}
+    >
+      {copyActions.map((action) => {
+        const { id, name, description, type, provider, options } = action;
 
-export default ActionsList
+        return (
+          <Reorder.Item as="div" key={id} value={action}>
+            <Card
+              sx={{
+                width: "100%",
+                padding: "4px",
+                marginBottom: "4px",
+                cursor: "grab",
+              }}
+            >
+              <CardContent
+                sx={{ padding: "5px", paddingBottom: "5px !important" }}
+              >
+                <Stack direction="row" spacing={1}>
+                  <MenuIcon />
+                  <Typography color="text.secondary">{name}</Typography>
+                </Stack>
+              </CardContent>
+            </Card>
+
+            {/*action: {id}*/}
+            {/*<div>name: {name}</div>*/}
+            {/*<div>description: {description}</div>*/}
+            {/*<div>type: {type}</div>*/}
+            {/*<div>provider: {provider}</div>*/}
+            {/*<div style={{ margin: "20px" }}>*/}
+            {/*  Options:{" "}*/}
+            {/*  {Object.values(options).map((value) => (*/}
+            {/*    <div style={{ margin: "10px" }}>*/}
+            {/*      <div>value: {value.optionValue}</div>*/}
+            {/*      <div>name: {value.optionName}</div>*/}
+            {/*    </div>*/}
+            {/*  ))}*/}
+            {/*</div>*/}
+          </Reorder.Item>
+        );
+      })}
+    </Reorder.Group>
+  );
+};
+
+export default ActionsList;
 // {
 //   ['ProviderName']: {
 //     ['TypeNmae']: [
