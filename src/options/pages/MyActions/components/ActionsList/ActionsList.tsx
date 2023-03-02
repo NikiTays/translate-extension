@@ -24,12 +24,12 @@ const ActionsList: React.FC<{}> = () => {
               sx={{
                 width: "100%",
                 padding: "4px",
-                marginBottom: "4px",
+                marginBottom: "8px",
                 cursor: "grab",
               }}
             >
               <CardContent
-                sx={{ padding: "5px", paddingBottom: "5px !important" }}
+                sx={{ padding: "4px", paddingBottom: "4px !important" }}
               >
                 <Stack direction="row" spacing={1}>
                   <MenuIcon />
