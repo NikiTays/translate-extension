@@ -1,12 +1,24 @@
-import { Box, CircularProgress } from "@mui/material";
 import React from "react";
+import { Box, Skeleton, Typography } from "@mui/material";
+import { DefaultSpace } from "../../components/DefaultSpace";
 
 export const Loading = () => {
   return (
-    <Box
-      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-    >
-      <CircularProgress />
-    </Box>
+    <DefaultSpace>
+      <Typography
+        variant="body2"
+        sx={{
+          width: "333px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Skeleton sx={{ width: "100%" }} animation="wave" />
+        <Skeleton sx={{ width: "100%" }} animation="wave" />
+        <Skeleton sx={{ width: "100%" }} animation="wave" />
+      </Typography>
+    </DefaultSpace>
   );
 };

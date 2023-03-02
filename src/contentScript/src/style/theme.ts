@@ -15,6 +15,10 @@ export const generateTheme = (params: IGenerateTheme) => {
           popper: {
             zIndex: Z_INDEX_MAX_VALUE + "!important",
           },
+          tooltip: {
+            backdropFilter: "saturate(280%) blur(20px)",
+            background: "rgba(29,29,31,0.72)",
+          },
         },
       },
       MuiPopover: {

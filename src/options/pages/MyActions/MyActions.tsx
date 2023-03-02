@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react'
-import ActionsList from './components/ActionsList'
-import { useMyActionsStore } from './myActionsStore'
+import React, { useEffect } from "react";
+import ActionsList from "./components/ActionsList";
+import { useMyActionsStore } from "./myActionsStore";
 
 const MyActions: React.FC<{}> = () => {
-  const { getActions, isLoading } = useMyActionsStore()
+  const { getActions, isLoading } = useMyActionsStore();
 
   useEffect(() => {
-    getActions()
-  }, [])
+    getActions();
+  }, []);
 
   if (isLoading) {
-    return null
+    return null;
   }
 
-  return <ActionsList />
-}
+  return <ActionsList />;
+};
 
-export default MyActions
+export default MyActions;

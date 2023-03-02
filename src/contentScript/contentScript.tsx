@@ -1,9 +1,11 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "@mui/material/styles";
-import App from "./App";
 import { CacheProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
+
+import App from "./App";
+
 import { generateTheme } from "./src/style/theme";
 
 const container = document.createElement("div");

@@ -5,8 +5,11 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    padding: "8px",
-    backdropFilter: "blur(4px)",
-    maxWidth: "444px",
+    padding: "0",
+    margin: "0",
+    maxWidth: "1000px",
+    backdropFilter: "saturate(280%) blur(20px)",
+    background: "rgba(29,29,31,0.72)",
+    border: "1px solid rgba(57,57,57,0.9)",
   },
 }));

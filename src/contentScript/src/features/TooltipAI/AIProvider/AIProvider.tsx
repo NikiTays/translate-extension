@@ -1,108 +1,105 @@
-import React, {
-  useCallback,
-  useState,
-  useMemo,
-  useEffect,
-  FC,
-  ReactNode,
-} from 'react'
-import Browser from 'webextension-polyfill'
-import { TErrors } from '../../../../../background/types/error.type'
-import { TPortMessages } from '../../../../../background/types/messages.type'
-import { TViewState } from '../../../store/useStore'
+import React, { useCallback, useState, useMemo, FC, ReactNode } from "react";
+import Browser from "webextension-polyfill";
+import { TErrors } from "../../../../../background/types/error.type";
+import { TPortMessages } from "../../../../../background/types/messages.type";
 
-import AIProviderContext from './AIProvider.context'
+import AIProviderContext from "./AIProvider.context";
+import { TViewState } from "../../../types/state.type";
 
 const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [viewState, setViewState] = useState(TViewState.MENU)
-  const [result, setResult] = useState('')
-  const [error, setError] = useState<TErrors>()
-  const [currentPort, setCurrentPort] = useState<Browser.Runtime.Port>()
+  const [viewState, setViewState] = useState(TViewState.MENU);
+  const [result, setResult] = useState("");
+  const [error, setError] = useState<TErrors>();
+  const [status, setStatus] = useState<string>("");
+  const [currentPort, setCurrentPort] = useState<Browser.Runtime.Port>();
 
   const sendMessageThatActionClicked = useCallback(
     ({
-      text,
-      actionId,
-      isNeedToUpdate,
-    }: {
-      text: string
-      actionId: number
-      isNeedToUpdate: boolean
-    }) => async () => {
-      setViewState(TViewState.LOADING)
-      const port = Browser.runtime.connect()
-      setCurrentPort(port)
+        text,
+        actionId,
+        isNeedToUpdate,
+      }: {
+        text: string;
+        actionId: number;
+        isNeedToUpdate: boolean;
+      }) =>
+      async () => {
+        setViewState(TViewState.LOADING);
+        const port = Browser.runtime.connect();
+        setCurrentPort(port);
 
-      const listener = (msg: any) => {
-        console.log('===== msg ', msg)
-        if (msg?.text) {
-          setResult(msg?.text)
-        }
-        if (msg.status === 'STARTED') {
-          setViewState(TViewState.LOADING)
-        }
-        if (msg.status === 'DATA_STREAM') {
-          setViewState((viewState) => {
-            if (viewState !== TViewState.LARGE_RESULT) {
-              return TViewState.DATA_STREAM
-            }
-            return viewState
-          })
-        }
-        if (msg.status === 'DONE') {
-          setViewState((viewState) => {
-            if (viewState !== TViewState.LARGE_RESULT) {
-              return TViewState.RESULT
-            }
-            return viewState
-          })
-          port.disconnect()
-        }
-        if (msg.error) {
-          setViewState(TViewState.ERROR)
-          setError(msg.error)
-          port.disconnect()
-        }
-      }
+        const listener = (msg: any) => {
+          setStatus(msg.status);
+          console.log("===== msg ", msg);
+          if (msg?.text) {
+            setResult(msg?.text);
+          }
+          if (msg.status === "STARTED") {
+            setViewState(TViewState.LOADING);
+          }
+          if (msg.status === "DATA_STREAM") {
+            setViewState((viewState) => {
+              if (viewState !== TViewState.LARGE_RESULT) {
+                return TViewState.DATA_STREAM;
+              }
+              return viewState;
+            });
+          }
+          if (msg.status === "DONE") {
+            setViewState((viewState) => {
+              if (viewState !== TViewState.LARGE_RESULT) {
+                return TViewState.RESULT;
+              }
+              return viewState;
+            });
+            port.disconnect();
+          }
+          if (msg.error) {
+            setViewState(TViewState.ERROR);
+            setError(msg.error);
+            port.disconnect();
+          }
+        };
 
-      port.onMessage.addListener(listener)
-      port.postMessage({
-        type: TPortMessages.USER_ACTION_CLICKED,
-        data: {
-          input: text,
-          actionId,
-          isNeedToUpdate,
-        },
-      })
-    },
-    [],
-  )
+        port.onMessage.addListener(listener);
+        port.postMessage({
+          type: TPortMessages.USER_ACTION_CLICKED,
+          data: {
+            input: text,
+            actionId,
+            isNeedToUpdate,
+          },
+        });
+      },
+    []
+  );
 
   const clearState = useCallback(() => {
-    setError(null)
-    setResult('')
-    setViewState(TViewState.MENU)
-    currentPort?.disconnect()
-    setCurrentPort(null)
-  }, [currentPort])
+    setError(null);
+    setResult("");
+    setViewState(TViewState.MENU);
+    currentPort?.disconnect();
+    setCurrentPort(null);
+  }, [currentPort]);
 
   const aiProviderApi = useMemo(
     () => ({
       viewState,
+      status,
       result,
       error,
       sendMessageThatActionClicked,
       setViewState,
       clearState,
     }),
-    [viewState, result, error, sendMessageThatActionClicked],
-  )
+    [viewState, result, error, status, sendMessageThatActionClicked]
+  );
 
   return (
     <AIProviderContext.Provider value={aiProviderApi}>
       {children}
     </AIProviderContext.Provider>
-  )
-}
+  );
+};
 
-export default AIProvider
+export default AIProvider;
