@@ -37,7 +37,7 @@ export const Menu: FC = () => {
 
   return (
     <Stack>
-      <Box sx={{ padding: "8px 8px 0 8px" }}>
+      <Box sx={{ padding: "7px 7px 0 7px" }}>
         <Autocomplete
           disablePortal
           id="combo-box-demo"
@@ -51,6 +51,7 @@ export const Menu: FC = () => {
               hiddenLabel
               sx={{
                 width: "100%",
+                fontSize: "14px !important",
               }}
               InputProps={{
                 startAdornment: (
