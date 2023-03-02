@@ -11,10 +11,7 @@ export const userActionClicked: TPortMessageHandlerFunction = async (
 ) => {
   try {
     const { actionId, input, isNeedToUpdate } = data
-    const {
-      actions: userActions,
-      actionRequests,
-    } = await Browser.storage.sync.get(['actions', 'actionRequests'])
+    const { actions: userActions } = await Browser.storage.sync.get(['actions'])
     const clickedAction: TUserAction = userActions.find(
       ({ id }) => id === actionId,
     )

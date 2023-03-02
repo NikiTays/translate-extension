@@ -7,10 +7,28 @@ export const requestUserActions = async () => {
         {
           id: uuidv4(),
           type: 'TRANSLATE',
-          name: 'translate action',
+          name: 'translate action by sse chat gtp',
           description: 'translate action description',
           provider: 'CHAT_GPT',
           options: {
+            providerOptions: {},
+            translateTo: {
+              optionValue: 'ru',
+              optionName: 'Translate to',
+              isRequired: true,
+            },
+          },
+        },
+        {
+          id: uuidv4(),
+          type: 'TRANSLATE',
+          name: 'translate action with token by chatgpt',
+          description: 'translate action description',
+          provider: 'CHAT_GPT',
+          options: {
+            providerOptions: {
+              model: 'gpt-3.5-turbo',
+            },
             translateTo: {
               optionValue: 'ru',
               optionName: 'Translate to',

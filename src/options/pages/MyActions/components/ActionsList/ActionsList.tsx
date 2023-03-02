@@ -1,17 +1,8 @@
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import React from "react";
-import { useMyActionsStore } from "../../myActionsStore";
+import React from 'react'
+import { useMyActionsStore } from '../../myActionsStore'
 
 const ActionsList: React.FC<{}> = () => {
-  const { actions } = useMyActionsStore();
+  const { actions } = useMyActionsStore()
 
   return (
     <div>
@@ -54,4 +45,3 @@ export default ActionsList
 //     ]
 //   }
 // }
->>>>>>> Stashed changes

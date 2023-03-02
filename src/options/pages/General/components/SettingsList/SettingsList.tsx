@@ -4,7 +4,7 @@ import { useGeneralStore } from '../../generalStore'
 const SettingsList: React.FC<{}> = () => {
   const { generalSettings } = useGeneralStore()
 
-  return <div>settings</div>
+  return <div>general in progress</div>
 }
 
 export default SettingsList

@@ -11,37 +11,41 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { CustomListItemButton } from "./components/CustomListItemButton";
-import { CustomListItemIcon } from "./components/CustomListItemIcon";
-import { ChatGPTIcon } from "../../../../icons/ChatGPTIcon";
-import { CustomListItemText } from "./components/CustomListItemText";
-import TranslateIcon from "@mui/icons-material/Translate";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import React, { FC } from "react";
-import { getSelectionText } from "../../../../utils/getSelectionText";
-import { useAIProviderContext } from "../../AIProvider/AIProvider.context";
-import { ContentCut } from "@mui/icons-material";
+} from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
+import { CustomListItemButton } from './components/CustomListItemButton'
+import { CustomListItemIcon } from './components/CustomListItemIcon'
+import { ChatGPTIcon } from '../../../../icons/ChatGPTIcon'
+import { CustomListItemText } from './components/CustomListItemText'
+import TranslateIcon from '@mui/icons-material/Translate'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import React, { FC } from 'react'
+import { getSelectionText } from '../../../../utils/getSelectionText'
+import { useAIProviderContext } from '../../AIProvider/AIProvider.context'
+import { ContentCut } from '@mui/icons-material'
 
 export const Menu: FC = () => {
-  const { sendMessageThatActionClicked } = useAIProviderContext();
-
+  const { sendMessageThatActionClicked, actions } = useAIProviderContext()
+  console.log('====== ', actions)
   const sendAction = (number: number) => {
     sendMessageThatActionClicked({
       text: getSelectionText(),
       actionId: number,
       isNeedToUpdate: false,
-    })();
-  };
+    })()
+  }
+
+  if (!actions?.length) {
+    return null
+  }
 
   return (
     <Stack>
-      <Box sx={{ padding: "7px 7px 0 7px" }}>
+      <Box sx={{ padding: '7px 7px 0 7px' }}>
         <Autocomplete
           disablePortal
           id="combo-box-demo"
-          options={[{ label: "The Redemption", year: 1994 }]}
+          options={[{ label: 'The Redemption', year: 1994 }]}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -50,8 +54,8 @@ export const Menu: FC = () => {
               variant="outlined"
               hiddenLabel
               sx={{
-                width: "100%",
-                fontSize: "14px !important",
+                width: '100%',
+                fontSize: '14px !important',
               }}
               InputProps={{
                 startAdornment: (
@@ -65,33 +69,17 @@ export const Menu: FC = () => {
         />
       </Box>
       <MenuList dense>
-        <MenuItem onClick={() => sendAction(1)}>
-          <ListItemIcon>
-            <ChatGPTIcon fontSize="small" />
-          </ListItemIcon>
-          <Typography variant="inherit" noWrap>
-            Translate with ChatGPT
-          </Typography>
-        </MenuItem>
-
-        <MenuItem onClick={() => sendAction(4)}>
-          <ListItemIcon>
-            <TranslateIcon fontSize="small" />
-          </ListItemIcon>
-          <Typography variant="inherit" noWrap>
-            Translate with Google
-          </Typography>
-        </MenuItem>
-
-        <MenuItem>
-          <ListItemIcon>
-            <MoreHorizIcon fontSize="small" />
-          </ListItemIcon>
-          <Typography variant="inherit" noWrap>
-            Others...
-          </Typography>
-        </MenuItem>
+        {actions.map(({ id, name }) => (
+          <MenuItem key={id} onClick={() => sendAction(id)}>
+            <ListItemIcon>
+              <ChatGPTIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit" noWrap>
+              {name}
+            </Typography>
+          </MenuItem>
+        ))}
       </MenuList>
     </Stack>
-  );
-};
+  )
+}

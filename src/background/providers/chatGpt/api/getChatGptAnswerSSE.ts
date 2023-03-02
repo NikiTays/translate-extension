@@ -3,13 +3,15 @@ import { v4 as uuidv4 } from 'uuid'
 import { createParser } from '../../../../lib/eventsource-parser/parse'
 import { TOnProviderMessage } from '../../../types/providers.type'
 import { streamAsyncIterable } from '../../../utils/streamAsyncIterable'
+import { getChatGPTAccessToken } from './getChatGPTAccessToken'
 
 export const getChatGptAnswerSSE: (options: {
   onMessage: TOnProviderMessage
   prompt: string
-  token: string
-}) => Promise<void> = async ({ onMessage, prompt, token }) => {
+}) => Promise<void> = async ({ onMessage, prompt }) => {
   onMessage({ status: 'started' })
+
+  const token = await getChatGPTAccessToken()
 
   const controller = new AbortController()
 

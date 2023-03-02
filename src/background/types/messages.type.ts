@@ -23,6 +23,7 @@ export enum TSyncMessages {
   GET_USER_ACTIONS = 'GET_USER_ACTIONS',
   ADD_USER_ACTION = 'ADD_USER_ACTION',
   OPEN_OPTIONS_PAGE = 'OPEN_OPTIONS_PAGE',
+  UPDATE_PROVIDER_SETTINGS = 'UPDATE_PROVIDER_SETTINGS',
 }
 
 export type TSyncMessagesData = {
@@ -32,6 +33,7 @@ export type TSyncMessagesData = {
     'description' | 'name' | 'options' | 'provider' | 'type'
   >
   [TSyncMessages.OPEN_OPTIONS_PAGE]: null
+  [TSyncMessages.UPDATE_PROVIDER_SETTINGS]: { token: string }
 }
 
 export type TSyncMessagesReturnData = {
@@ -44,6 +46,7 @@ export type TSyncMessagesReturnData = {
     error?: TErrors
   }
   [TSyncMessages.OPEN_OPTIONS_PAGE]: void
+  [TSyncMessages.UPDATE_PROVIDER_SETTINGS]: void
 }
 
 export type TSyncMessageHandlerFunction = (

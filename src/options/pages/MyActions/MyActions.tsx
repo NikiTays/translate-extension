@@ -4,7 +4,7 @@ import { useMyActionsStore } from './myActionsStore'
 
 const MyActions: React.FC<{}> = () => {
   const { getActions, isLoading } = useMyActionsStore()
-  console.log('====== loading', isLoading)
+
   useEffect(() => {
     getActions()
   }, [])

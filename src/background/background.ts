@@ -16,6 +16,7 @@ import {
 
 const initialData = {
   actionRequest: [],
+  providerSettings: { chatGpt: {} },
 }
 
 Browser.runtime.onInstalled.addListener(async () => {
