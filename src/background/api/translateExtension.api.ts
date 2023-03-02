@@ -1,46 +1,54 @@
+import { v4 as uuidv4 } from 'uuid'
+
 export const requestUserActions = async () => {
   try {
     const data = await Promise.resolve({
       actions: [
         {
-          id: 1,
+          id: uuidv4(),
           type: 'TRANSLATE',
           name: 'translate action',
           description: 'translate action description',
           provider: 'CHAT_GPT',
           options: {
-            translateTo: 'ru',
+            translateTo: {
+              optionValue: 'ru',
+              optionName: 'Translate to',
+              isRequired: true,
+            },
           },
         },
         {
-          id: 2,
+          id: uuidv4(),
           type: 'REQUEST_PROMPT_ANSWER',
           name: 'prompt action',
           description: 'prompt action description',
           provider: 'CHAT_GPT',
           options: {
-            promptTemplate: 'explain this code "{{input}}"',
+            promptTemplate: {
+              optionValue: 'summarize this "{{input}}"',
+              optionName: 'Prompt template',
+              isRequired: true,
+            },
           },
         },
         {
-          id: 3,
-          type: 'REQUEST_PROMPT_ANSWER',
-          name: 'second prompt action',
-          description: 'second prompt action description',
-          provider: 'CHAT_GPT',
-          options: {
-            promptTemplate: 'what is "{{input}}"',
-          },
-        },
-        {
-          id: 4,
+          id: uuidv4(),
           type: 'TRANSLATE',
           name: 'Translate with google',
           description: 'translate with google description',
           provider: 'GOOGLE_TRANSLATE',
           options: {
-            translateFrom: 'en',
-            translateTo: 'ru',
+            translateFrom: {
+              optionValue: 'en',
+              optionName: 'Translate from',
+              isRequired: true,
+            },
+            translateTo: {
+              optionValue: 'ru',
+              optionName: 'Translate to',
+              isRequired: true,
+            },
           },
         },
       ],

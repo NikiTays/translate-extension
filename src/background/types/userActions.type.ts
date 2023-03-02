@@ -1,6 +1,13 @@
 import { TProviders } from './providers.type'
 
-type TOptions = Record<string, string | number>
+type TOptions = Record<
+  string,
+  {
+    optionValue: string | boolean
+    optionName: string
+    isRequired: boolean
+  }
+>
 
 export enum TUserActionTypes {
   REQUEST_PROMPT_ANSWER = 'REQUEST_PROMPT_ANSWER',

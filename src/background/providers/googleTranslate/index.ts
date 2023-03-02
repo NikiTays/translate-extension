@@ -5,14 +5,11 @@ export const googleTranslateProvider: TProviderHandler = async (
   onMessage,
   { clickedAction, input },
 ) => {
-  const { translateFrom, translateTo } = clickedAction.options as {
-    translateFrom: string
-    translateTo: string
-  }
+  const { translateFrom, translateTo } = clickedAction.options
 
   await getGoogleTranslate({
-    translateFrom,
-    translateTo,
+    translateFrom: translateFrom.optionValue as string,
+    translateTo: translateTo.optionValue as string,
     input,
     onMessage,
   })

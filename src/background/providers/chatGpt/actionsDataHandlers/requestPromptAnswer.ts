@@ -4,9 +4,9 @@ export const requestPromptAction: TUserActionDataHandler = (
   text,
   { promptTemplate },
 ) => {
-  if (typeof promptTemplate !== 'string') {
+  if (typeof promptTemplate.optionValue !== 'string') {
     throw Error('Prompt parametr are empty')
   }
 
-  return promptTemplate.replace('{{input}}', text)
+  return promptTemplate.optionValue.replace('{{input}}', text)
 }

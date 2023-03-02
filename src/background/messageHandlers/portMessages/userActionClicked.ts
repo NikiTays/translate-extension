@@ -19,10 +19,6 @@ export const userActionClicked: TPortMessageHandlerFunction = async (
       ({ id }) => id === actionId,
     )
 
-    const alreadyRequested = actionRequests.find(
-      ({ input: actionRequestInput }) => actionRequestInput === input,
-    )
-
     const providerHandler = providersMap[clickedAction.provider]
 
     if (!providerHandler) {
