@@ -3,6 +3,7 @@ import { useMyActionsStore } from "../../myActionsStore";
 import { Reorder } from "framer-motion";
 import { Card, CardContent, Stack, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import EditIcon from "@mui/icons-material/Edit";
 
 const ActionsList: React.FC<{}> = () => {
   const { actions } = useMyActionsStore();
@@ -32,7 +33,10 @@ const ActionsList: React.FC<{}> = () => {
               >
                 <Stack direction="row" spacing={1}>
                   <MenuIcon />
-                  <Typography color="text.secondary">{name}</Typography>
+                  <Typography sx={{ flexGrow: 1 }} color="text.secondary">
+                    {name}
+                  </Typography>
+                  <EditIcon />
                 </Stack>
               </CardContent>
             </Card>
