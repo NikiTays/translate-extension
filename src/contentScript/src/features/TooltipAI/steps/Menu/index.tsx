@@ -26,7 +26,7 @@ import { ContentCut } from '@mui/icons-material'
 
 export const Menu: FC = () => {
   const { sendMessageThatActionClicked, actions } = useAIProviderContext()
-  console.log('====== ', actions)
+
   const sendAction = (number: number) => {
     sendMessageThatActionClicked({
       text: getSelectionText(),

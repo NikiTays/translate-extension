@@ -15,11 +15,18 @@ import {
 } from './types/messages.type'
 
 const initialData = {
+  isDataSet: true,
   actionRequest: [],
   providerSettings: { chatGpt: {} },
 }
 
 Browser.runtime.onInstalled.addListener(async () => {
+  const { isDataSet } = await Browser.storage.sync.get(['isDataSet'])
+
+  if (isDataSet) {
+    return
+  }
+
   try {
     const userActions = await requestUserActions()
     const userInfo = await requestUserInfo()

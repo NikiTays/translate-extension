@@ -14,6 +14,9 @@ type TMyActionsStore = {
   // addAction: (
   //   data: TSyncMessagesData[TSyncMessages.ADD_USER_ACTION],
   // ) => Promise<void>
+  removeAction: (
+    data: TSyncMessagesData[TSyncMessages.REMOVE_USER_ACTIONS],
+  ) => Promise<void>
 }
 
 export const useMyActionsStore = create<TMyActionsStore>((set) => ({
@@ -34,4 +37,12 @@ export const useMyActionsStore = create<TMyActionsStore>((set) => ({
 
   //   set({ actions })
   // },
+  removeAction: async (data) => {
+    const { actions } = (await sendMessage(
+      TSyncMessages.REMOVE_USER_ACTIONS,
+      data,
+    )) as TSyncMessagesReturnData[TSyncMessages.REMOVE_USER_ACTIONS]
+
+    set({ actions })
+  },
 }))

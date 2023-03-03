@@ -24,6 +24,8 @@ export enum TSyncMessages {
   ADD_USER_ACTION = 'ADD_USER_ACTION',
   OPEN_OPTIONS_PAGE = 'OPEN_OPTIONS_PAGE',
   UPDATE_PROVIDER_SETTINGS = 'UPDATE_PROVIDER_SETTINGS',
+  SORT_USER_ACTIONS = 'SORT_USER_ACTIONS',
+  REMOVE_USER_ACTIONS = 'REMOVE_USER_ACTIONS',
 }
 
 export type TSyncMessagesData = {
@@ -34,6 +36,8 @@ export type TSyncMessagesData = {
   >
   [TSyncMessages.OPEN_OPTIONS_PAGE]: null
   [TSyncMessages.UPDATE_PROVIDER_SETTINGS]: { token: string }
+  [TSyncMessages.SORT_USER_ACTIONS]: { actionIds: number[] }
+  [TSyncMessages.REMOVE_USER_ACTIONS]: { actionId: number }
 }
 
 export type TSyncMessagesReturnData = {
@@ -47,6 +51,11 @@ export type TSyncMessagesReturnData = {
   }
   [TSyncMessages.OPEN_OPTIONS_PAGE]: void
   [TSyncMessages.UPDATE_PROVIDER_SETTINGS]: void
+  [TSyncMessages.SORT_USER_ACTIONS]: void
+  [TSyncMessages.REMOVE_USER_ACTIONS]: {
+    actions: TUserAction[]
+    error?: TErrors
+  }
 }
 
 export type TSyncMessageHandlerFunction = (

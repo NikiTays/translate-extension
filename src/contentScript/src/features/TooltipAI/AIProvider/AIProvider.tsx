@@ -18,8 +18,10 @@ import AIProviderContext from './AIProvider.context'
 import { TViewState } from '../../../types/state.type'
 import { sendMessage } from '../../../../../utils/sendMessage'
 import { TUserAction } from '../../../../../background/types/userActions.type'
+import { useSelection } from '../../../hooks/useSelection'
 
 const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const { selection } = useSelection()
   const [viewState, setViewState] = useState(TViewState.MENU)
   const [result, setResult] = useState('')
   const [error, setError] = useState<TErrors>()
@@ -34,7 +36,7 @@ const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
       ({ actions }: TSyncMessagesReturnData[TSyncMessages.GET_USER_ACTIONS]) =>
         setActions(actions),
     )
-  }, [])
+  }, [selection?.text])
 
   const sendMessageThatActionClicked = useCallback(
     ({
