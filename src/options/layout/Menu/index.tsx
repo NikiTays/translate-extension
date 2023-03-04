@@ -8,6 +8,7 @@ import {
   MenuItem,
   MenuList,
   Paper,
+  Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { menuData } from "./const/menuData";
@@ -20,17 +21,29 @@ export const Menu: FC<IOwnProps> = (props) => {
   const { children } = props;
 
   return (
-    <Container maxWidth="lg">
-      <Grid container spacing={3}>
+    <Container
+      maxWidth="lg"
+      sx={{
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+        display: "flex",
+      }}
+    >
+      <Grid container spacing={3} sx={{ maxHeight: "700px", height: "100%" }}>
         <Grid item xs={3}>
           <Paper
             elevation={3}
             sx={{
-              minHeight: "100vh",
               height: "100%",
-              paddingTop: "25vh",
             }}
           >
+            <Typography
+              variant="h5"
+              sx={{ margin: "10px 16px 0px 16px", display: "inline-block" }}
+            >
+              Settings
+            </Typography>
             <MenuList>
               {menuData.map((item, itemIndex) => {
                 return (
@@ -50,10 +63,7 @@ export const Menu: FC<IOwnProps> = (props) => {
           </Paper>
         </Grid>
         <Grid item xs={9}>
-          <Paper
-            elevation={3}
-            sx={{ minHeight: "100vh", height: "100%", padding: "16px" }}
-          >
+          <Paper elevation={3} sx={{ height: "100%", padding: "16px" }}>
             {children}
           </Paper>
         </Grid>
