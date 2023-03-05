@@ -14,8 +14,6 @@ export const requestUserActions = async () => {
             providerOptions: {},
             translateTo: {
               optionValue: 'ru',
-              optionName: 'Translate to',
-              isRequired: true,
             },
           },
         },
@@ -31,8 +29,6 @@ export const requestUserActions = async () => {
             },
             translateTo: {
               optionValue: 'ru',
-              optionName: 'Translate to',
-              isRequired: true,
             },
           },
         },
@@ -45,8 +41,6 @@ export const requestUserActions = async () => {
           options: {
             promptTemplate: {
               optionValue: 'summarize this "{{input}}"',
-              optionName: 'Prompt template',
-              isRequired: true,
             },
           },
         },

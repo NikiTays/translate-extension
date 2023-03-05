@@ -4,8 +4,6 @@ type TOptions = Record<
   string,
   {
     optionValue: string | boolean
-    optionName: string
-    isRequired: boolean
   }
 >
 

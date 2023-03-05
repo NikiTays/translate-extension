@@ -5,7 +5,6 @@ import {
   TSyncMessages,
   TSyncMessagesData,
 } from '../../types/messages.type'
-import { TUserAction } from '../../types/userActions.type'
 
 export const removeUserAction: TSyncMessageHandlerFunction = async ({
   actionId,

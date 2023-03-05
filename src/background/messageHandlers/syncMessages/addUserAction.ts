@@ -31,6 +31,6 @@ export const addUserAction: TSyncMessageHandlerFunction = async ({
 
     await Browser.storage.sync.set({ actions })
 
-    return actions
+    return { actions }
   } catch (error) {}
 }

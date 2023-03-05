@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import ActionsList from './components/ActionsList'
+import AddActionForm from './components/AddActionForm'
 import { useMyActionsStore } from './myActionsStore'
 
 const MyActions: React.FC<{}> = () => {
@@ -13,7 +14,12 @@ const MyActions: React.FC<{}> = () => {
     return null
   }
 
-  return <ActionsList />
+  return (
+    <>
+      <ActionsList />
+      <AddActionForm />
+    </>
+  )
 }
 
 export default MyActions

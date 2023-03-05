@@ -37,6 +37,7 @@
     "@mui/material": "^5.11.8",
     "expiry-map": "^2.0.0",
     "framer-motion": "^10.0.1",
+    "react-hook-form": "^7.43.4",
     "react-router-dom": "^6.0.1",
     "uuid": "^9.0.0",
     "webextension-polyfill": "^0.10.0",
