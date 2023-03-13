@@ -7,7 +7,7 @@ export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
   [`& .${tooltipClasses.tooltip}`]: {
     padding: "0",
     margin: "0",
-    maxWidth: "1000px",
+    maxWidth: "333px",
     backdropFilter: "saturate(280%) blur(20px)",
     background: "rgba(29,29,31,0.72)",
     border: "1px solid rgba(57,57,57,0.9)",

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getSelectionText } from "../utils/getSelectionText";
 
 interface SectionInfo {
   text: string;

@@ -1,11 +1,14 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import { Z_INDEX_MAX_VALUE } from "../const/cssMaxValue";
-import createCache from "@emotion/cache";
+import createCache, { StylisPlugin } from "@emotion/cache";
+import { WEB_COMPONENT_NAME } from "../const/webComponent";
+import { remToPx } from "../utils/remToPx";
 
 interface IGenerateTheme {
   shadowRootElement: HTMLDivElement;
   emotionRootElement: HTMLHeadElement;
 }
+
 export const generateTheme = (params: IGenerateTheme) => {
   const { shadowRootElement, emotionRootElement } = params;
   const darkTheme = createTheme({
@@ -18,6 +21,7 @@ export const generateTheme = (params: IGenerateTheme) => {
           tooltip: {
             backdropFilter: "saturate(280%) blur(20px)",
             background: "rgba(29,29,31,0.72)",
+            borderRadius: "8px",
           },
         },
       },
@@ -42,10 +46,17 @@ export const generateTheme = (params: IGenerateTheme) => {
     },
   });
 
+  const remToPxStylisPlugin: StylisPlugin = (element) => {
+    element.return = remToPx(element.return);
+    element.value = remToPx(element.value);
+  };
+
   const emotionCache = createCache({
-    key: "tooltipai",
+    nonce: WEB_COMPONENT_NAME,
+    key: WEB_COMPONENT_NAME,
     prepend: true,
     container: emotionRootElement,
+    stylisPlugins: [remToPxStylisPlugin],
   });
 
   const theme = responsiveFontSizes(darkTheme);

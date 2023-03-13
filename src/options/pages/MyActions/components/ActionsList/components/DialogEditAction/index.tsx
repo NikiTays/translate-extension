@@ -1,8 +1,8 @@
 import React, { FC, useCallback } from "react";
 import {
+  Autocomplete,
   Box,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { TUserAction } from "../../../../../../../background/types/userActions.type";
 import { useMyActionsStore } from "../../../../myActionsStore";
+import { Controller, useForm } from "react-hook-form";
 
 interface IOwnProps {
   open: boolean;
@@ -22,7 +23,14 @@ interface IOwnProps {
 export const DialogEditAction: FC<IOwnProps> = (props) => {
   const { removeAction } = useMyActionsStore();
   const { open, onClose, action } = props;
-  const { id, name, description, type, provider, options } = action;
+  const { id, name } = action;
+  const { control, handleSubmit, getValues } = useForm<TUserAction>({
+    defaultValues: action,
+  });
+
+  console.log(getValues());
+
+  const onSubmit = (data) => console.log(data);
 
   const handleClose = () => {
     onClose();
@@ -41,23 +49,81 @@ export const DialogEditAction: FC<IOwnProps> = (props) => {
       <DialogTitle>Action: {name}</DialogTitle>
       <DialogContent>
         <Box sx={{ width: "444px", minWidth: "444px" }}>
-          <Stack sx={{ margin: "10px 0" }} spacing={2}>
-            <TextField fullWidth label="Name" variant="outlined" value={name} />
-            <TextField
-              fullWidth
-              multiline
-              label="Descriptin"
-              variant="outlined"
-              value={description}
-            />
-            <TextField fullWidth label="Type" variant="outlined" value={type} />
-            <TextField
-              fullWidth
-              label="Provider"
-              variant="outlined"
-              value={provider}
-            />
-          </Stack>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack sx={{ margin: "10px 0 0 0" }} spacing={2}>
+              <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                  <Autocomplete
+                    {...field}
+                    disablePortal
+                    options={[{ label: "s", value: "e" }]}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        fullWidth
+                        label="Type"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                )}
+              />
+
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Name"
+                    variant="outlined"
+                  />
+                )}
+              />
+
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="description"
+                    variant="outlined"
+                  />
+                )}
+              />
+
+              <Controller
+                name="provider"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Provider"
+                    variant="outlined"
+                  />
+                )}
+              />
+
+              <Controller
+                name="options"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Options"
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Stack>
+          </form>
         </Box>
       </DialogContent>
       <DialogActions>

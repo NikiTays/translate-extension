@@ -21,7 +21,7 @@ export const Result: FC = () => {
   return (
     <DefaultSpace>
       <>
-        <Box sx={{ width: "333px" }}>
+        <Box>
           <Stack direction="row" alignItems="center">
             <Typography variant="body2" sx={{ flexGrow: 1 }}>
               ChatGPT:

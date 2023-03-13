@@ -8,7 +8,6 @@ export const Loading = () => {
       <Typography
         variant="body2"
         sx={{
-          width: "333px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

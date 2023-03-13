@@ -7,5 +7,5 @@ interface IOwnProps {
 
 export const DefaultSpace: FC<IOwnProps> = (props) => {
   const { children } = props;
-  return <Box sx={{ padding: "7px", maxWidth: "399px" }}>{children}</Box>;
+  return <Box sx={{ padding: "7px", width: "331px" }}>{children}</Box>;
 };
