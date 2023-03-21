@@ -1,15 +1,13 @@
 import { TErrors } from '../../../../../background/types/error.type'
 import { TUserAction } from '../../../../../background/types/userActions.type'
-import { TViewState } from '../../../types/state.type'
 
-export type TAIProviderApi = {
-  viewState: TViewState
+export type TActionUIProviderApi = {
   actions: TUserAction[]
+  isLoading: boolean
   status: string
   result: string
   error: TErrors
   clearState: () => void
-  setViewState: (TViewState) => void
   sendMessageThatActionClicked: ({
     text,
     actionId,

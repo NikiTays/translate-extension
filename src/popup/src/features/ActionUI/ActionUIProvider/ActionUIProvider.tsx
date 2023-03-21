@@ -14,15 +14,13 @@ import {
   TSyncMessagesReturnData,
 } from '../../../../../background/types/messages.type'
 
-import AIProviderContext from './AIProvider.context'
-import { TViewState } from '../../../types/state.type'
+import ActionUIProviderContext from './ActionProvider.context'
 import { sendMessage } from '../../../../../utils/sendMessage'
 import { TUserAction } from '../../../../../background/types/userActions.type'
-import { useSelection } from '../../../hooks/useSelection'
+import { TViewState } from '../../../../../contentScript/src/types/state.type'
 
-const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { selection } = useSelection()
-  const [viewState, setViewState] = useState(TViewState.MENU)
+const ActionUIProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const [isLoading, setIsLoading] = useState<boolean>()
   const [result, setResult] = useState('')
   const [error, setError] = useState<TErrors>()
   const [status, setStatus] = useState<string>('')
@@ -36,7 +34,7 @@ const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
       ({ actions }: TSyncMessagesReturnData[TSyncMessages.GET_USER_ACTIONS]) =>
         setActions(actions),
     )
-  }, [selection?.text])
+  }, [])
 
   const sendMessageThatActionClicked = useCallback(
     async ({
@@ -48,7 +46,7 @@ const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
       actionId: number
       isNeedToUpdate: boolean
     }) => {
-      setViewState(TViewState.LOADING)
+      setIsLoading(true)
       const port = Browser.runtime.connect()
       setCurrentPort(port)
 
@@ -58,27 +56,16 @@ const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
           setResult(msg?.text)
         }
         if (msg.status === 'STARTED') {
-          setViewState(TViewState.LOADING)
+          setIsLoading(true)
         }
         if (msg.status === 'DATA_STREAM') {
-          setViewState((viewState) => {
-            if (viewState !== TViewState.LARGE_RESULT) {
-              return TViewState.DATA_STREAM
-            }
-            return viewState
-          })
         }
         if (msg.status === 'DONE') {
-          setViewState((viewState) => {
-            if (viewState !== TViewState.LARGE_RESULT) {
-              return TViewState.RESULT
-            }
-            return viewState
-          })
+          setIsLoading(false)
           port.disconnect()
         }
         if (msg.error) {
-          setViewState(TViewState.ERROR)
+          setIsLoading(false)
           setError(msg.error)
           port.disconnect()
         }
@@ -100,30 +87,29 @@ const AIProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const clearState = useCallback(() => {
     setError(null)
     setResult('')
-    setViewState(TViewState.MENU)
+    setIsLoading(false)
     currentPort?.disconnect()
     setCurrentPort(null)
   }, [currentPort])
 
-  const aiProviderApi = useMemo(
+  const actionUIProviderApi = useMemo(
     () => ({
-      viewState,
+      isLoading,
       status,
       actions,
       result,
       error,
       sendMessageThatActionClicked,
-      setViewState,
       clearState,
     }),
-    [actions, viewState, result, error, status, sendMessageThatActionClicked],
+    [actions, result, error, isLoading, status, sendMessageThatActionClicked],
   )
 
   return (
-    <AIProviderContext.Provider value={aiProviderApi}>
+    <ActionUIProviderContext.Provider value={actionUIProviderApi}>
       {children}
-    </AIProviderContext.Provider>
+    </ActionUIProviderContext.Provider>
   )
 }
 
-export default AIProvider
+export default ActionUIProvider

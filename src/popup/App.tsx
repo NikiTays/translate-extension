@@ -1,13 +1,16 @@
-import React from "react";
-import { ActionUI } from "./src/features/ActionUI";
-import { Menu } from "./src/layout/Menu";
+import React from 'react'
+import { ActionUI } from './src/features/ActionUI'
+import ActionUIProvider from './src/features/ActionUI/ActionUIProvider/ActionUIProvider'
+import { Menu } from './src/layout/Menu'
 
 const App: React.FC<{}> = () => {
   return (
-    <Menu>
-      <ActionUI />
-    </Menu>
-  );
-};
+    <ActionUIProvider>
+      <Menu>
+        <ActionUI />
+      </Menu>
+    </ActionUIProvider>
+  )
+}
 
-export default App;
+export default App
