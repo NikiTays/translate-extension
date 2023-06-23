@@ -2,7 +2,7 @@
 
 A browser extension that translates text and searches for information using AI.
 
-<img width="566" alt="Screenshot 2023-06-23 at 18 28 25" src="https://github.com/NikiTays/translate-extension/assets/44669801/1c74250f-aa0a-4a39-9ba5-f4487a784f09">
+<img width="545" alt="Screenshot 2023-06-23 at 18 30 15" src="https://github.com/NikiTays/translate-extension/assets/44669801/bf44bc1f-1aed-4d8a-8fff-aea51d14e71f">
 
 <br>
 
