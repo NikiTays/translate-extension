@@ -1,4 +1,6 @@
-# translate-extension
+# Translate Extension
+
+A browser extension that translates text and searches for information using AI.
 
 <img width="508" alt="Screenshot 2023-06-23 at 17 41 42" src="https://github.com/NikiTays/translate-extension/assets/44669801/61bb64cc-688e-43ae-876d-8356a06ee32b">
 
